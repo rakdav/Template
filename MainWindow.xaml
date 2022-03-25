@@ -23,7 +23,7 @@
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Orientation="Horizontal">
             <Label Content="Введите IP клиента"/>
             <TextBox x:Name="IPClient" Width="200" Text="192.168.65.96"/>
-            <Button Content="Connect" Click="Button_Click_1"/>
+            <!--<Button Content="Connect" Click="Button_Click_1"/>-->
         </StackPanel>
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Name="Message" Margin="10"/>
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" 

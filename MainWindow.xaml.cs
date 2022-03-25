@@ -27,13 +27,13 @@ namespace Template
         private Socket listeningSocket;
         private EndPoint remotePoint;
         private Task<string> task;
-        public MainWindow()
+        public  MainWindow()
         {
             InitializeComponent();
             String host = Dns.GetHostName();
             ipServer = Dns.GetHostEntry(host).AddressList[4];
             IPServ.Content = ipServer.ToString();
-           
+            Task.Run(() => Listen());
         }
 
 
@@ -54,11 +54,7 @@ namespace Template
             }
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(()=>Listen());
-        }
-        private void Listen()
+        private async void Listen()
         {
                   StringBuilder builder = new StringBuilder();
                   IPEndPoint ipPoint = new IPEndPoint(ipServer, port);
@@ -77,6 +73,8 @@ namespace Template
                           {
                               bytes = listeningSocket.ReceiveFrom(data, ref remotePoint);
                               builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                              builder.Append(remotePoint);
+                              builder.Append("\n");
                           }
                           while (listeningSocket.Available > 0);
                           IPEndPoint remoteFullIp = remotePoint as IPEndPoint;
@@ -97,6 +95,5 @@ namespace Template
                       }
                   }
         }
-
     }
 }
