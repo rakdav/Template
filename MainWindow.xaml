@@ -31,8 +31,8 @@
         </ListBox>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" 
-                    Orientation="Horizontal" Margin="10">
-            <TextBox TextWrapping="Wrap" x:Name="Mes" Width="725" Margin="0 0 5 0"/>
+                    Orientation="Horizontal" Margin="10" >
+            <TextBox TextWrapping="Wrap" x:Name="Mes" Width="710" Margin="0 0 5 0"/>
             <Button Content="Send" Width="50" Click="Button_Click"/>
         </StackPanel>
     </Grid>
