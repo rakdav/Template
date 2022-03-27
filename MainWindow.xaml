@@ -5,30 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Template"
         mc:Ignorable="d"
-        Title="Messanger" Height="450" Width="800">
+        Title="Messanger" Height="450" Width="800" Background="#FF8585EF">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.15*"/>
             <RowDefinition/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.15*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
-            <Label Content="Адрес сервера:"/>
-            <Label x:Name="IPServ"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
+            <Label Content="Выберите адрес сервера:"/>
+            <ComboBox x:Name="IPServ" SelectionChanged="IPServ_SelectionChanged" Width="200"/>
         </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
             <Label Content="Введите IP клиента"/>
-            <TextBox x:Name="IPClient" Width="200" Text="192.168.65.96"/>
-            <!--<Button Content="Connect" Click="Button_Click_1"/>-->
+            <TextBox x:Name="IPClient" Width="200"/>
         </StackPanel>
-        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Name="Message" Margin="10"/>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="Message" Margin="10" FontSize="14" Foreground="Red" FontFamily="Arial" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListBox.Background>
+                <SolidColorBrush Color="#FFFFF500" Opacity="0.8"  />
+            </ListBox.Background>
+        </ListBox>
+
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" 
                     Orientation="Horizontal" Margin="10">
-            <TextBox  x:Name="Mes" Width="725"/>
+            <TextBox TextWrapping="Wrap" x:Name="Mes" Width="725" Margin="0 0 5 0"/>
             <Button Content="Send" Width="50" Click="Button_Click"/>
         </StackPanel>
     </Grid>

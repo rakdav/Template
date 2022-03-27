@@ -23,17 +23,17 @@ namespace Template
     public partial class MainWindow : Window
     {
         private int port = 8010;
-        private IPAddress ipServer;
+        private IPAddress[] ipServer;
         private Socket listeningSocket;
         private EndPoint remotePoint;
         private Task<string> task;
+        private IPAddress serverIP;
         public  MainWindow()
         {
             InitializeComponent();
             String host = Dns.GetHostName();
-            ipServer = Dns.GetHostEntry(host).AddressList[4];
-            IPServ.Content = ipServer.ToString();
-            Task.Run(() => Listen());
+            ipServer = Dns.GetHostEntry(host).AddressList;
+            IPServ.ItemsSource= ipServer.ToList();
         }
 
 
@@ -48,7 +48,7 @@ namespace Template
                 EndPoint remotePoint = new IPEndPoint(IPAddress.Parse(IPClient.Text), port);
                 listening.SendTo(data, remotePoint);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -57,7 +57,7 @@ namespace Template
         private async void Listen()
         {
                   StringBuilder builder = new StringBuilder();
-                  IPEndPoint ipPoint = new IPEndPoint(ipServer, port);
+                  IPEndPoint ipPoint = new IPEndPoint(serverIP, port);
                   listeningSocket = new Socket(AddressFamily.InterNetwork,
                       SocketType.Dgram, ProtocolType.Udp);
                   listeningSocket.Bind(ipPoint);
@@ -72,13 +72,13 @@ namespace Template
                           do
                           {
                               bytes = listeningSocket.ReceiveFrom(data, ref remotePoint);
-                              builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                              builder.Append(remotePoint);
-                              builder.Append("\n");
+                              builder.Append(remotePoint.ToString()+"\t");
+                              builder.Append(Encoding.Unicode.GetString(data, 0, bytes));                            
                           }
                           while (listeningSocket.Available > 0);
                           IPEndPoint remoteFullIp = remotePoint as IPEndPoint;
-                          Dispatcher.Invoke(()=>Message.Text=builder.ToString());
+                          Dispatcher.Invoke(()=>Message.Items.Add(builder.ToString()));
+                          builder.Clear();
                       }
                   }
                   catch (Exception ex)
@@ -94,6 +94,12 @@ namespace Template
                           listeningSocket = null;
                       }
                   }
+        }
+
+        private void IPServ_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            serverIP = IPAddress.Parse(IPServ.SelectedItem.ToString());
+            Task.Run(() => Listen());
         }
     }
 }
